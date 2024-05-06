@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService1";
+
+package project;
+
+service Project
+{
+	rpc Add(ProjectRequest) returns (ProjectReply); 
+}
+
+message ProjectRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message ProjectReply {
+  string message = 1;
+}

@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+import "google/protobuf/duration.proto";  
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+
+option csharp_namespace = "GrpcService1";
+
+package greet;
+
+// 会议管理
+service Greeter {
+  // 发送消息
+  rpc SayHello (HelloRequest) returns (HelloReply){
+    option (google.api.http) = {
+      get: "/v1/greeter/{name}"
+    }; 
+  };
+  //服务端流式发送消息
+  rpc StreamingFromServer (HelloRequest) returns (stream HelloReply)
+  {
+      option (google.api.http) = {
+          get: "/v2/greeter/{name}"
+        }; 
+  };
+  rpc StreamingFromClient (stream HelloRequest) returns (HelloReply);
+  rpc DownloadResults (stream HelloRequest) returns (stream HelloReply);
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  //名称
+  string name = 1;
+
+}
+message Person
+{
+    string Name=1; 
+}
+
+message Error {
+    string Msg=1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  //信息
+  string message = 1;
+  google.protobuf.Timestamp start = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Any detail = 4;
+}
+message ResponseMessage {
+  oneof result {
+    Error error = 1;
+    Person person = 2;
+  }
+}
+
+message DecimalValue {
+
+    // Whole units part of the amount
+    int64 units = 1;
+
+    // Nano units of the amount (10^-9)
+    // Must be same sign as units
+    sfixed32 nanos = 2;
+}
+
+

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcService1.Protos";
+package download;
+
+service Downloader {
+  rpc DownloadFile (DownloadFileRequest) returns (stream DownloadFileResponse);
+}
+
+message DownloadFileRequest {
+  string id = 1;
+}
+
+message DownloadFileResponse {
+  DownloadFileMetadata metadata = 1;
+  bytes data = 2;
+}
+
+message DownloadFileMetadata {
+  string file_name = 1;
+}
